@@ -2,9 +2,13 @@ name: AI Issue Responder
 on:
   issues:
     types: [opened]
+  issue_comment:
+    types: [created] # コメントが作成された時もトリガーにする
 
 jobs:
   respond:
+    # ボット自身（github-actions）のコメントには反応しないようにガードをかけます
+    if: github.event.comment.user.login != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -13,6 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # プロフィール読み込み（前と同じ）
       - name: Read Profile
         id: profile
         run: |
@@ -21,7 +26,6 @@ jobs:
           else
             CONTENT="あなたは陽気なエンジニア萬俵さんのAIアシスタントです。"
           fi
-          # ヒアドキュメントで安全に出力
           echo "content<<EOF" >> $GITHUB_OUTPUT
           echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -30,20 +34,30 @@ jobs:
         id: gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Issue作成時かコメント時かで取得するテキストを切り替えます
+          INPUT_TEXT: ${{ github.event.comment.body || github.event.issue.body }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
           USER_PROFILE: ${{ steps.profile.outputs.content }}
         run: |
-          # プロンプトを安全にJSON化してAPIを叩く
+          # プロンプトの組み立て
+          PROMPT="以下の【萬俵さんのプロフィール】に基づき、ユーザーからのメッセージに陽気に答えてください！
+          
+          【萬俵さんのプロフィール】
+          $USER_PROFILE
+          
+          【今回のメッセージ】
+          $INPUT_TEXT
+          
+          回答は短く簡潔に、エンジニアらしい活気あるトーンでお願いします！🚀"
+
           RESPONSE=$(curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}" \
             -H 'Content-Type: application/json' \
             -d "{
               \"contents\": [{
-                \"parts\":[{\"text\": $(echo "プロフィール: $USER_PROFILE\n\nIssue内容: $ISSUE_TITLE $ISSUE_BODY\n\n上記に基づき、陽気に挨拶と要約をして！" | jq -Rs .)}]
+                \"parts\":[{\"text\": $(echo "$PROMPT" | jq -Rs .)}]
               }]
             }")
 
-          # 結果の抽出
           ANSWER=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // "エラーが発生したみたいっす！ログを見てほしいっす！🤖"')
           
           echo "answer<<EOF" >> $GITHUB_OUTPUT
