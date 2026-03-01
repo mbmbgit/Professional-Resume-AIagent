@@ -46,7 +46,7 @@ jobs:
 
           # 2. APIリクエスト実行
           # -w "\n%{http_code}" をつけてステータスコードも確認できるようにします
-          RESPONSE_RAW=$(curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}" \
+          RESPONSE_RAW=$(curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}" \
             -H 'Content-Type: application/json' \
             -d "$(jq -n --arg p "$PROMPT" '{contents: [{parts: [{text: $p}]}]}')")
 
