@@ -3,11 +3,10 @@ on:
   issues:
     types: [opened]
   issue_comment:
-    types: [created] # コメントが作成された時もトリガーにする
+    types: [created]
 
 jobs:
   respond:
-    # ボット自身（github-actions）のコメントには反応しないようにガードをかけます
     if: github.event.comment.user.login != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
@@ -17,7 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # プロフィール読み込み（前と同じ）
       - name: Read Profile
         id: profile
         run: |
@@ -34,34 +32,38 @@ jobs:
         id: gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Issue作成時かコメント時かで取得するテキストを切り替えます
           INPUT_TEXT: ${{ github.event.comment.body || github.event.issue.body }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
           USER_PROFILE: ${{ steps.profile.outputs.content }}
         run: |
-          # プロンプトの組み立て
-          PROMPT="以下の【萬俵さんのプロフィール】に基づき、ユーザーからのメッセージに陽気に答えてください！
+          # 1. 安全なプロンプト構築
+          PROMPT="以下の【萬俵さんのプロフィール】に基づき、ユーザーの【メッセージ】に陽気に答えて！🚀
           
-          【萬俵さんのプロフィール】
+          【プロフィール】
           $USER_PROFILE
           
-          【今回のメッセージ】
-          $INPUT_TEXT
-          
-          回答は短く簡潔に、エンジニアらしい活気あるトーンでお願いします！🚀"
+          【メッセージ】
+          $INPUT_TEXT"
 
-          RESPONSE=$(curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}" \
+          # 2. APIリクエスト実行
+          # -w "\n%{http_code}" をつけてステータスコードも確認できるようにします
+          RESPONSE_RAW=$(curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}" \
             -H 'Content-Type: application/json' \
-            -d "{
-              \"contents\": [{
-                \"parts\":[{\"text\": $(echo "$PROMPT" | jq -Rs .)}]
-              }]
-            }")
+            -d "$(jq -n --arg p "$PROMPT" '{contents: [{parts: [{text: $p}]}]}')")
 
-          ANSWER=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text // "エラーが発生したみたいっす！ログを見てほしいっす！🤖"')
+          # 3. 回答の抽出試行
+          ANSWER=$(echo "$RESPONSE_RAW" | jq -r '.candidates[0].content.parts[0].text // empty')
+
+          # 4. エラー判定と詳細出力の構築
+          if [ -z "$ANSWER" ]; then
+            # 回答が空（エラー時）は、生のレスポンスを整形して表示
+            ERROR_MSG=$(echo "$RESPONSE_RAW" | jq . || echo "JSONパース失敗: $RESPONSE_RAW")
+            FINAL_OUTPUT="### ⚠️ AI回答生成エラーだっす！🤖\n原因を調査してほしいっす！\n\n**RAW RESPONSE:**\n\`\`\`json\n$ERROR_MSG\n\`\`\`"
+          else
+            FINAL_OUTPUT="$ANSWER"
+          fi
           
           echo "answer<<EOF" >> $GITHUB_OUTPUT
-          echo "$ANSWER" >> $GITHUB_OUTPUT
+          echo -e "$FINAL_OUTPUT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Post Comment
