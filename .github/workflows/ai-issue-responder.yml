@@ -38,9 +38,12 @@ jobs:
           INPUT_TEXT: ${{ github.event.comment.body || github.event.issue.body }}
           USER_PROFILE: ${{ steps.profile.outputs.content }}
         run: |
-          # プロンプト構築
+          # 指示に「言語の自動選択」を追加っす！✨
           PROMPT="あなたは以下の【萬俵さんのプロフィール】を持つAIアシスタントです。
-          ユーザーの【メッセージ】に陽気に、エンジニアらしく活気あるトーンで答えてください！🚀
+          
+          【ルール】
+          1. ユーザーの【メッセージ】の言語（日本語や英語など）を判断し、同じ言語で回答してください。
+          2. 陽気に、エンジニアらしく活気あるトーンで答えてください！🚀
           
           【プロフィール】
           $USER_PROFILE
