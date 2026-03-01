@@ -1,41 +1,74 @@
-name: AI Issue Responder with Profile
+name: AI Issue Responder
 on:
   issues:
     types: [opened]
 
 jobs:
-  respond_with_context:
+  respond:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write # Issueにコメントを書き込む権限
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. プロフィールファイルを読み込んで変数に格納
+      # 1. プロフィールファイルを読み込む
       - name: Read Profile
         id: profile
         run: |
-          PROFILE=$(cat .github/ai-profile.md)
+          # ファイルが存在しない場合のフォールバック付き
+          if [ -f .github/ai-profile.md ]; then
+            CONTENT=$(cat .github/ai-profile.md)
+          else
+            CONTENT="あなたは親切なアシスタントです。"
+          fi
           echo "content<<EOF" >> $GITHUB_OUTPUT
-          echo "$PROFILE" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      # 2. AI APIを呼び出す（ここでは疑似的なスクリプト例）
-      - name: Generate Response
-        id: ai
+      # 2. Gemini APIを叩いて回答を生成
+      - name: Generate AI Response
+        id: gemini
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
-          PROFILE_CONTENT: ${{ steps.profile.outputs.content }}
-          API_KEY: ${{ secrets.AI_API_KEY }}
+          USER_PROFILE: ${{ steps.profile.outputs.content }}
         run: |
-          # ここでcurlやPythonスクリプトを使い、以下のプロンプトを送信
-          # プロンプト例:
-          # "あなたは以下のプロフィールを持つ人物として振る舞ってください: $PROFILE_CONTENT"
-          # "このIssueの内容を要約し、挨拶をしてください: $ISSUE_BODY"
-          echo "answer=こんにちは！プロフィールの内容に基づき、Issueの要約を作成しました..." >> $GITHUB_OUTPUT
+          # プロンプトの組み立て
+          PROMPT="以下の【あなたのプロフィール】に基づき、新しく投稿された【Issue内容】に対して、挨拶と要約を返してください。
+          
+          【あなたのプロフィール】
+          $USER_PROFILE
+          
+          【Issue内容】
+          タイトル: $ISSUE_TITLE
+          本文: $ISSUE_BODY
+          
+          回答はMarkdown形式で、親しみやすく簡潔に作成してください。"
 
-      # 3. コメントとして投稿
+          # Gemini API 呼び出し (curlを使用)
+          RESPONSE=$(curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}" \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"contents\": [{
+                \"parts\":[{\"text\": $(echo "$PROMPT" | jq -Rs .)}]
+              }]
+            }")
+
+          # 結果の抽出（jqコマンドが必要）
+          ANSWER=$(echo "$RESPONSE" | jq -r '.candidates[0].content.parts[0].text')
+          
+          # GitHub Actionsの出力にセット
+          echo "answer<<EOF" >> $GITHUB_OUTPUT
+          echo "$ANSWER" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # 3. 生成された回答をIssueにコメント
       - name: Post Comment
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.issue.number }}
-          body: ${{ steps.ai.outputs.answer }}
+          body: |
+            ${{ steps.gemini.outputs.answer }}
