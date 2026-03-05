@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Trajectory - 軌跡と挑戦 -</title>
+    
+    <!-- Tailwind CSS (CDN経由で読み込み) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons (CDN経由で読み込み) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- カスタムアニメーション設定 -->
+    <style>
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-300 font-sans antialiased selection:bg-emerald-500/30">
+
+    <div class="min-h-screen">
+        <!-- ヘッダーセクション -->
+        <header class="relative pt-24 pb-16 px-6 overflow-hidden flex flex-col items-center text-center z-0">
+            <!-- 背景グラデーション -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-slate-900 -z-10"></div>
+            
+            <!-- 装飾的な背景パターン -->
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 -z-10 pointer-events-none">
+                <div class="absolute top-10 left-10 w-64 h-64 bg-emerald-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+                <div class="absolute top-10 right-10 w-64 h-64 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+            </div>
+
+            <!-- ラベル -->
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm mb-6">
+                <i data-lucide="code" class="w-4 h-4"></i>
+                <span>Python Engineer / Freelance</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
+                Life Trajectory
+                <span class="block text-2xl md:text-3xl text-slate-400 font-normal mt-2">軌跡と挑戦</span>
+            </h1>
+            
+            <div class="max-w-2xl text-slate-300 text-base md:text-lg leading-relaxed flex flex-col items-center">
+                <i data-lucide="quote" class="text-slate-600 mb-4 opacity-50 w-8 h-8"></i>
+                <p>
+                    過酷な環境、大切な家族との別れ、そして自身の病。<br>
+                    波乱に満ちた人生の波に飲まれることなく、社会の現場で泥臭く生き抜き、<br>
+                    平和と多様な価値観を学び続けてきました。<br class="hidden md:block" />
+                    すべての経験を糧にし、現在はPythonエンジニアとして、新しい働き方と未来を切り拓いています。
+                </p>
+            </div>
+        </header>
+
+        <!-- タイムラインセクション -->
+        <section class="relative max-w-5xl mx-auto px-4 py-16">
+            <!-- 中央のライン（PC） / 左側のライン（スマホ） -->
+            <div class="absolute left-[39px] md:left-1/2 top-0 bottom-0 w-1 bg-slate-800 transform md:-translate-x-1/2">
+                <!-- ライン上の光るエフェクト -->
+                <div class="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-emerald-500/0 via-emerald-500/50 to-emerald-500/0"></div>
+            </div>
+
+            <!-- JavaScriptでここにデータが挿入されます -->
+            <div id="timeline-container" class="relative z-10"></div>
+        </section>
+
+        <!-- フッター -->
+        <footer class="py-12 text-center border-t border-slate-800">
+            <p class="text-slate-500 text-sm flex items-center justify-center">
+                <i data-lucide="cpu" class="w-4 h-4 mr-2"></i>
+                Resilience and Continuous Learning
+            </p>
+        </footer>
+    </div>
+
+    <!-- タイムライン描画用スクリプト -->
+    <script>
+        const timelineData = [
+            {
+                period: "Childhood",
+                title: "原風景と過酷な環境でのサバイバル",
+                location: "神奈川県横浜市 / 福岡県北九州市",
+                description: "神奈川県横浜市に誕生。10歳で母の実家がある福岡県北九州市へ移住する。進学した中学校は、同級生が重大な事件を起こすほど荒れ果てた過酷な環境だったが、その中で「生き抜く力」と社会を冷静に見つめる視点を養った。",
+                icon: "map-pin"
+            },
+            {
+                period: "High School",
+                title: "喪失の悲しみと、ラグビーへの没頭",
+                location: "福岡県",
+                description: "進学校へ入学し、ラグビーと出会う。高校2年の時、父親が自ら命を絶つというあまりに深い悲しみを経験。やり場のない思いと葛藤を抱えながらも、すべてをラグビーにぶつけることで自己を保ち、強靭な精神力を鍛え上げた。",
+                icon: "shield"
+            },
+            {
+                period: "University",
+                title: "知の探求と「平和」への希求",
+                location: "立命館大学",
+                description: "ラグビーの推薦で立命館大学へ進学。映像制作やインテリアショップでのインターンなど、枠にとらわれない活動を展開。「なぜ戦争は起きるのか」という根源的な問いから政治思想ゼミでマルクス主義を学び、キング牧師、ダライ・ラマ、ガンジーの平和思想について卒業論文を執筆した。",
+                icon: "book-open"
+            },
+            {
+                period: "2000s - 2010s",
+                title: "社会の荒波と現場での泥臭い研鑽",
+                location: "静岡県 / 福岡県 / 岡山県 / 大阪府",
+                description: "卒業後はあえて就活をせず、松下や全国の工場で派遣社員として現場のリアルを学ぶ。リーマン・ショックの混乱の中、大手で働いていた実兄を喪失。さらに家族との価値観（宗教観）の決定的な違いに直面し、精神的な自立を志向する。その後、トヨタ自動車九州での勤務評価から(株)PEOの正社員へ登用。",
+                icon: "factory"
+            },
+            {
+                period: "2017 - 2019",
+                title: "社会活動への参加とITへの目覚め",
+                location: "大阪府 豊中市",
+                description: "岡山での勤務を経て、大阪府豊中市のスマホ部品メーカーへ。豊中で「広島長崎の折鶴の会」の人々と出会い、国会請願などの活動に参画。社会課題へのアプローチを学ぶ中で、未来を創る「IT」の領域に強い可能性を感じ、新たな挑戦のために退職を決意。",
+                icon: "users"
+            },
+            {
+                period: "Turning Point",
+                title: "新たな壁、そして新しい働き方の模索",
+                location: "兵庫県 西宮市",
+                description: "西宮市のAmazon倉庫や豊中市のデータセンターで働きながらITへの理解を深める。その矢先、双極性障害を発症。一時は困難に直面するが、これを「場所に縛られない働き方」へシフトする契機と捉え、在宅ワークを模索し始める。",
+                icon: "cpu"
+            },
+            {
+                period: "Present",
+                title: "Pythonエンジニアとして独立",
+                location: "在宅 / フリーランス",
+                description: "幾多の逆境を力に変え、クラウドソーシングを活用して個人事業主（Pythonエンジニア）として独立。現在は、Amazonや民泊での業務と並行しながら、エンジニアとしてのスキルを磨き続け、自分だけのキャリアを力強く歩んでいる。",
+                icon: "code"
+            }
+        ];
+
+        const container = document.getElementById('timeline-container');
+
+        timelineData.forEach((item, index) => {
+            const isEven = index % 2 === 0;
+            const flexDirection = isEven ? 'md:flex-row-reverse' : '';
+            
+            const html = `
+                <div class="mb-12 flex flex-col md:flex-row items-center w-full ${flexDirection}">
+                    <!-- 空白のスペーサー（PC用） -->
+                    <div class="hidden md:block w-1/2 px-8"></div>
+
+                    <!-- 中央のラインとアイコン -->
+                    <div class="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-slate-800 border-4 border-emerald-500 z-10 text-emerald-400 shrink-0 mx-4 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                        <i data-lucide="${item.icon}" class="w-6 h-6"></i>
+                    </div>
+
+                    <!-- コンテンツカード -->
+                    <div class="w-full md:w-1/2 px-4 md:px-8 mt-6 md:mt-0">
+                        <div class="bg-slate-800/50 backdrop-blur-sm p-6 rounded-2xl border border-slate-700 shadow-xl hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all duration-300">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-emerald-400 font-mono text-sm font-bold tracking-wider">${item.period}</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">${item.title}</h3>
+                            <div class="flex items-center text-slate-400 text-sm mb-4">
+                                <i data-lucide="map-pin" class="w-4 h-4 mr-1"></i>
+                                <span>${item.location}</span>
+                            </div>
+                            <p class="text-slate-300 leading-relaxed text-sm">
+                                ${item.description}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        });
+
+        // Lucideアイコンの初期化（SVGタグに変換）
+        lucide.createIcons();
+    </script>
+</body>
+</html>
