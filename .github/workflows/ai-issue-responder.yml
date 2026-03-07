@@ -9,8 +9,8 @@ jobs:
   respond:
     # ボット自身のコメントには反応しない（無限ループ防止）
     if: github.event.comment.user.login != 'github-actions[bot]'
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
     permissions:
       issues: write
 
