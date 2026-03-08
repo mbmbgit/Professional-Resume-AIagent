@@ -16,7 +16,7 @@
 | **Cloud & Infra** | **Google Cloud** (`Compute Engine` `BigQuery` `Cloud Functions`) `Linux (Ubuntu)` `Windows Server` |
 | **DevOps & Auto** | `GitHub Actions` (CI/CD, IssueOps) `Docker` `Task Scheduler` `Cron` |
 | **API Integration** | `REST API Design` `Google Maps API` `YouTube Data API` `BrightData` `Slack/Chatwork API` |
-| **AI & LLM Ops** | `Gemini 1.5 Flash` `Claude Code` `ChatGPT API` `Prompt Engineering` `AI-based Data Correction` |
+| **AI & LLM Ops** | `Gemini API` `Claude Code` `ChatGPT API` `Prompt Engineering` `AI-based Data Correction` |
 
 ---
 
