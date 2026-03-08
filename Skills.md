@@ -1,344 +1,91 @@
-import os
-
-# 職務経歴書のコンテンツ
-content = """# 職務経歴書 (スキルシート)
+# 職務経歴書 (Data Engineer / Backend Engineer)
 
 ## プロフェッショナルサマリー
-Pythonを用いたデータ収集・ETL処理・業務自動化（RPA）を専門とするエンジニアです。
-Web上の非構造化データやAPIから取得したデータを、ビジネス活用可能な形式に整形・統合するデータパイプライン構築を得意としています。近年はGoogle CloudやGitHub Actionsを用いた運用の自動化（IssueOps）、生成AI（Gemini/Claude）を活用した開発効率化やデータクレンジングにも注力しています。
+Pythonを中心とした技術を用い、Web上の多様なソースからビジネス価値のあるデータを抽出・加工・統合する**データエンジニアリング**を専門としています。
+単なるデータ収集にとどまらず、**ETL（Extract, Transform, Load）プロセスの自動化**、APIリクエスト最適化による**コスト削減**、およびGitHub ActionsやCloud Functionsを用いた**Serverlessな運用基盤の構築**を得意としています。
+直近では、GeminiやClaude等のLLMをデータクレンジングや名寄せ処理に組み込み、非構造化データの品質を飛躍的に高める取り組みを行っています。
 
 ---
 
-## 技術スタック
+## 技術スタック (Technical Skills)
 
 | カテゴリ | 技術・ツール |
 | :--- | :--- |
-| **言語** | Python 3, VB.NET, GAS (Google Apps Script), SPARQL |
-| **クラウド・インフラ** | Google Cloud (GCE, BigQuery, Cloud Functions), Linux (Ubuntu), Windows Server |
-| **ライブラリ・API** | Pandas, Selenium, Playwright, Flet, Google Maps API, YouTube Data API, BrightData API |
-| **AI・LLM活用** | Gemini 1.5 Flash, Claude Code, ChatGPT API, Line Clova OCR |
-| **開発ツール・DevOps** | GitHub Actions, GitHub Codespaces, VS Code, Windsurf, Docker |
-| **データ・DB** | CSV, JSON, Excel, MySQL, SQLite |
+| **Data Engineering** | **ETL Design**, Data Cleansing (Pandas/NumPy), Data Normalization, Format Conversion (JSON/CSV/Parquet) |
+| **Languages** | **Python 3** (Main), Google Apps Script (GAS), SPARQL, VB.NET |
+| **Cloud & Infra** | **Google Cloud** (Compute Engine, BigQuery, Cloud Functions), Linux (Ubuntu), Windows Server |
+| **Automation & DevOps** | **GitHub Actions** (CI/CD, IssueOps), Docker, Task Scheduler, Cron |
+| **API & Integration** | REST API Design, Google Maps API, YouTube Data API, BrightData, Slack/Chatwork API |
+| **AI & LLM Ops** | **Prompt Engineering** (Gemini 1.5 Flash, Claude, ChatGPT), AI-based Data Correction |
 
 ---
 
-## 職務経歴 (プロジェクト実績)
+## 主なプロジェクト実績 (Projects)
 
 ### 1. Google Maps API活用におけるデータ抽出最適化・分析基盤構築
 **期間:** 2025年9月 ～ 2026年2月
-**役割:** バックエンドエンジニア / データエンジニア
-**環境:** Python 3, Google Cloud, GitHub Actions, Codespaces, Claude Code, Linux
+**役割:** データエンジニア / バックエンドエンジニア
+**環境:** Python 3, Google Cloud, GitHub Actions, Linux
 
-**【業務内容】**
-Google Maps APIを利用した地理データ収集システムの開発および運用。
-* **IssueOpsの導入:** GitHub Issueをトリガーとしたデータ抽出・分析フローの構築。
-* **コスト最適化:** キャッシュ戦略と効率的なクエリ設計によるAPIリクエスト数の削減。
-* **可視化:** 取得データに基づくヒートマップ作成および分析レポートの自動生成。
+**【プロジェクト概要】**
+地理データを用いたマーケティング分析基盤の構築および運用コストの最適化。
 
-**【担当工程】**
-要件定義 / 基本設計 / 詳細設計 / 実装 / テスト（単体・結合） / 運用保守
+**【データエンジニアリングとしての成果】**
+* **APIコスト最適化 (Cost Optimization):**
+    * 重複リクエストを排除するキャッシュシステムと、必要なフィールドのみを取得するクエリ設計により、API従量課金を大幅に削減。
+* **運用自動化 (IssueOps):**
+    * GitHub Actionsを活用し、Issueへのコメントをトリガーとして「データ抽出→加工→レポート生成」が走る自動化フローを構築。非エンジニアでも安全にバッチ処理を実行可能な環境を提供。
+* **データ可視化:**
+    * 取得した位置情報をヒートマップとして可視化し、エリア分析レポートを自動生成するパイプラインを実装。
 
 ---
 
-### 2. Google Maps API データ抽出フロー構築 (初期フェーズ)
-**期間:** 2025年9月 (単月)
+### 2. Google Maps API データパイプライン プロトタイピング
+**期間:** 2025年9月
 **役割:** バックエンドエンジニア
-**環境:** Python 3, Google Cloud, GitHub Actions, Gemini 1.5 Flash, Linux
+**環境:** Python 3, Google Cloud, Gemini 1.5 Flash
 
 **【業務内容】**
-APIコスト削減を目的とした、データ抽出ロジックのプロトタイプ開発と検証。
-* 効率的なデータ抽出アルゴリズムの設計。
-
-**【担当工程】**
-要件定義 / 基本設計 / 詳細設計 / 実装 / テスト
+* 大規模データ抽出に耐えうるアーキテクチャの設計検証（PoC）。
+* Gemini 1.5 Flashを用いた、抽出データの意味解析およびタグ付け精度の検証。
 
 ---
 
-### 3. Wikipedia/Wikidata 学術用データセット構築
-**期間:** 2025年7月 (単月)
+### 3. 学術研究用ナレッジグラフ構築 (Wikidata/MediaWiki)
+**期間:** 2025年7月
 **役割:** データエンジニア
-**環境:** Python 3, SPARQL, VS Code, Gemini 1.5 Flash, Windows
+**環境:** Python 3, SPARQL, Gemini 1.5 Flash
 
-**【業務内容】**
-学術研究用のデータ基盤整備プロジェクト。
-* **大規模データ抽出:** Wikidata APIおよびMediaWiki APIを使用し、約11万件のデータを抽出。
-* **AI品質管理:** Gemini 1.5 Flashを用いた論理的なデータ整合性チェックとクリーニングの実装。
+**【プロジェクト概要】**
+学術利用を目的とした大規模公開データの整備および品質担保。
 
-**【担当工程】**
-要件定義 / 基本設計 / 詳細設計 / 実装 / テスト
+**【成果】**
+* **大規模データ処理:** Wikidata APIおよびSPARQLクエリを駆使し、**11万件**のエンティティデータを効率的に抽出・統合。
+* **AI品質管理 (AI-Driven QA):**
+    * データの欠損や論理的矛盾を検知するため、Gemini 1.5 Flashを用いた自動チェック機構を実装。人手による確認コストを最小化した。
 
 ---
 
-### 4. Salesforce向け企業データベース更新自動化
+### 4. CRMデータベース更新バッチ開発 (Salesforce連携)
 **期間:** 2025年6月 ～ 2025年7月
 **役割:** バックエンドエンジニア
-**環境:** Python 3, Google Sheets API, Gemini 1.5 Flash, Excel, Windows
+**環境:** Python 3, Google Sheets API, Excel
 
 **【業務内容】**
-CRM（Salesforce）内の企業情報の鮮度を保つための更新バッチ開発。
-* 外部ソースと照合し、差分データを自動更新するスクリプトを作成。
-
-**【担当工程】**
-要件定義 / 基本設計 / 詳細設計 / 実装 / テスト
+* 企業データベースの鮮度維持を目的とした、データ更新バッチの開発。
+* 複数のデータソースを照合し、Salesforce取り込み用のフォーマットへ自動変換するETL処理を実装。
 
 ---
 
-### 5. 広告検証用プロキシネットワーク連携システム
+### 5. 広告検証用プロキシネットワーク基盤構築
 **期間:** 2025年3月 ～ 2025年4月
-**役割:** バックエンドエンジニア
-**環境:** Python 3, BrightData API, Google Cloud Console, Windsurf, Ubuntu
+**役割:** インフラ/バックエンドエンジニア
+**環境:** Python 3, BrightData API, Ubuntu
 
 **【業務内容】**
-Web広告の表示検証を行うための、プロキシサービス（BrightData）連携モジュールの開発。
-* APIを通じたIPローテーション制御と、JSON形式でのログ収集基盤の構築。
-
-**【担当工程】**
-詳細設計 / 実装 / 単体テスト
+* 広告配信の地域整合性を検証するため、BrightData APIを用いたIPローテーションおよびアクセスログ収集システムを構築。
+* 取得したJSONログを解析可能な形式に変換し、データベースへ格納するフローを整備。
 
 ---
 
-### 6. 地理データ統合・ID名寄せツール開発 (GUI)
-**期間:** 2024年11月 ～ 2025年2月
-**役割:** アプリケーションエンジニア
-**環境:** Python, Flet (GUI), Google Maps Place Detail API, Gemini 1.5 Flash, Windsurf, Windows
-
-**【業務内容】**
-異なるプラットフォーム間の地理データを統合するデスクトップアプリ開発。
-* **AI名寄せ:** 表記ゆれのある施設データを、Gemini APIを用いて同一IDに統合・正規化。
-* **GUI実装:** Pythonフレームワーク「Flet」を用いた操作画面の開発。
-
-**【担当工程】**
-要件定義 / 基本設計 / 詳細設計 / 実装 / テスト
-
----
-
-### 7. 論文要約・テキスト変換AIシステム
-**期間:** 2024年10月 (単月)
-**役割:** AIエンジニア
-**環境:** Python, GCP, Gemini API, PyMuPDF, BeautifulSoup, Linux
-
-**【業務内容】**
-学術論文（PDF/HTML）を解析し、自動で要約を生成するシステム。
-* 非構造化データ（PDF）からのテキスト抽出精度向上。
-* Gemini APIを用いた文脈を考慮した要約生成パイプラインの構築。
-
-**【担当工程】**
-基本設計 / 詳細設計 / 実装 / 単体テスト
-
----
-
-### 8. Web監視・通知システム (No-Code/Low-Code)
-**期間:** 2023年5月 ～ 2024年4月
-**役割:** 開発・運用担当
-**環境:** Google Apps Script (GAS), Octoparse, Zapier, Chatwork API, Windows
-
-**【業務内容】**
-競合サイトの更新検知および通知フローの自動化。
-* ノーコードツールとGASを組み合わせ、低コストで運用可能な監視体制を構築。
-
-**【担当工程】**
-詳細設計 / 実装 / テスト
-
----
-
-### 9. AIアノテーション (動画)
-**期間:** 2024年4月 ～ 継続中
-**役割:** アノテーター
-**ツール:** ELAN
-
-**【業務内容】**
-機械学習用データセット作成のための動画アノテーション作業。
-
----
-
-### 10. データ収集用スクレイピングモジュール開発
-**期間:** 2023年3月 ～ 2024年2月
-**役割:** Pythonエンジニア
-**環境:** Python 3, Selenium 4.1, VS Code
-
-**【業務内容】**
-特定Webサイトからのデータ収集を行うPythonスクリプトの作成。
-
-**【担当工程】**
-詳細設計 / 実装 / 単体テスト
-
----
-
-### 11. OCRデータ収集ワークフロー開発
-**期間:** 2024年1月 ～ 2024年2月
-**役割:** RPAエンジニア
-**ツール:** Octoparse, CSV
-
-**【業務内容】**
-データ収集ソフトウェア（Octoparse）の設定およびワークフロー構築。
-
-**【担当工程】**
-詳細設計 / 実装 / 単体テスト
-
----
-
-### 12. スクレイピングツール導入支援・レクチャー
-**期間:** 2023年12月 ～ 2024年1月
-**役割:** テクニカルサポート
-**ツール:** Octoparse
-
-**【業務内容】**
-クライアントに対するデータ収集ツールの導入支援および操作レクチャー（オンライン）。
-
----
-
-### 13. データ収集・クレンジングプログラム開発
-**期間:** 2023年9月 ～ 2023年10月
-**役割:** Pythonエンジニア
-**環境:** Python 3, VS Code
-
-**【業務内容】**
-Webデータ収集およびPandas等を用いたデータクレンジング処理の実装。
-
-**【担当工程】**
-詳細設計 / 実装 / 単体テスト
-
----
-
-### 14. OCR活用デスクトップアプリ開発
-**期間:** 2023年5月 ～ 2023年6月
-**役割:** アプリケーションエンジニア
-**環境:** Python 3, LINE CLOVA OCR, ChatGPT API, Windows 10
-
-**【業務内容】**
-OCR APIを活用した文字認識デスクトップアプリケーションの開発。
-* ユーザーエクスペリエンス（UX）を考慮したGUI設計とAPI連携の実装。
-* ローカルファイルとクラウドAPIの連携処理。
-
-**【担当工程】**
-基本設計 ～ 総合テスト / 導入
-
----
-
-### 15. RPAワークフロー開発 (継続案件)
-**期間:** 2023年5月 ～ 2023年6月
-**役割:** Pythonエンジニア
-**環境:** Python 3, ChatGPT API, Windows 10
-
-**【業務内容】**
-データ収集および整形を行う自動化スクリプトの開発。
-
-**【担当工程】**
-基本設計 ～ 導入
-
----
-
-### 16. ダッシュボード用データパイプライン構築 (GCP)
-**期間:** 2023年3月 ～ 2023年4月
-**役割:** クラウドエンジニア
-**環境:** Python 3, GAS, Google Compute Engine (GCE), Ubuntu, Windows Task Scheduler
-
-**【業務内容】**
-BIダッシュボードへデータを供給するための収集・加工パイプラインの構築。
-* GCE上でのヘッドレスブラウザ運用と定期実行（Cron/Task Scheduler）の設定。
-
-**【担当工程】**
-基本設計 ～ 導入
-
----
-
-### 17. 行政データクレンジング・リスト生成
-**期間:** 2023年2月 ～ 2023年3月
-**役割:** データエンジニア
-**環境:** Python 3, 正則表現 (Regex), Ubuntu
-
-**【業務内容】**
-DM送付用リスト作成のため、約17万件の行政公開データを収集・正規化。
-* 正規表現を用いた住所・電話番号等の高度な情報抽出とクリーニング。
-
-**【担当工程】**
-要件定義 ～ 納品
-
----
-
-### 18. マーケティング用画像収集GUIアプリ
-**期間:** 2022年12月 ～ 2023年1月
-**役割:** Pythonエンジニア
-**環境:** Python 3, GUIライブラリ, Windows 10
-
-**【業務内容】**
-Web上の画像を自動巡回し、スクリーンショットおよび画像保存を行うGUIツールの開発。
-
-**【担当工程】**
-基本設計 ～ 導入
-
----
-
-### 19. 海外ゲームデータ収集 RPA (UiPath)
-**期間:** 2022年12月 (単月)
-**役割:** RPAエンジニア
-**環境:** UiPath, VB.NET, Windows 10
-
-**【業務内容】**
-海外ゲームサイトからのデータ収集を行うUiPathワークフローの開発。
-
-**【担当工程】**
-基本設計 ～ 導入
-
----
-
-### 20. 分析用データクローリングシステム
-**期間:** 2022年9月 ～ 2023年10月
-**役割:** Pythonエンジニア
-**環境:** Python 3, Windows 10
-
-**【業務内容】**
-データ分析のための大規模クローリングシステム開発。
-* Class設計を用いたポリモーフィズムの実装により、保守性の高いコードを実現。
-
-**【担当工程】**
-要件定義 ～ 導入
-
----
-
-### 21. YouTube Data API連携リスト作成
-**期間:** 2021年10月 ～ 2021年12月
-**役割:** Pythonエンジニア
-**環境:** Python, YouTube Data API, Windows 10
-
-**【業務内容】**
-YouTube Data APIを利用し、特定条件に基づく動画/チャンネルリストを自動生成するツール開発。
-
-**【担当工程】**
-要件定義 ～ 導入
-
----
-
-### 22. Web監視・通知システム (Selenium)
-**期間:** 2021年8月 ～ 2021年9月
-**役割:** Pythonエンジニア
-**環境:** Python, Selenium, Chatwork API, Windows 10
-
-**【業務内容】**
-Seleniumを用いたWebサイト監視およびチャットツールへの通知システム開発。
-
-**【担当工程】**
-要件定義 ～ 導入
-
----
-
-### 23. データセンター運用保守
-**期間:** 2017年10月 ～ 2018年4月
-**所属:** 株式会社Adecco (常駐先: 富士通系列データセンター)
-**役割:** インフラ運用オペレーター
-**環境:** Windows Server, Systemwalker, Arcserve, UNIX
-
-**【業務内容】**
-大規模データセンターにおけるサーバー・ネットワーク機器の監視および一次対応。
-* サーバーランプチェック、バックアップ媒体交換。
-* 監視ツール（Systemwalker）を用いたアラート対応およびエスカレーション。
-
----
-"""
-
-# ファイルに書き込み
-file_name = "resume.md"
-with open(file_name, "w", encoding="utf-8") as f:
-    f.write(content)
-
-print(f"{file_name} を生成しました。")
+### 6. 地理データ統合・ID名寄せ
