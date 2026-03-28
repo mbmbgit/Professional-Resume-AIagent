@@ -45,7 +45,7 @@
 ### 🧪 2. Google Maps API データパイプライン プロトタイピング
 * **Period:** 2025/09
 * **Role:** バックエンドエンジニア
-* **Tech:** `Python 3` `Google Cloud` `Gemini 1.5 Flash`
+* **Tech:** `Python 3` `Google Cloud` `Gemini `
 
 **【業務内容】**
 * 大規模データ抽出に耐えうるアーキテクチャの設計検証（PoC）。
@@ -56,7 +56,7 @@
 ### 📚 3. 学術研究用ナレッジグラフ構築 (Wikidata/MediaWiki)
 * **Period:** 2025/07
 * **Role:** データエンジニア
-* **Tech:** `Python 3` `SPARQL` `Gemini 1.5 Flash`
+* **Tech:** `Python 3` `SPARQL` `Gemini`
 
 **【プロジェクト概要】**
 学術利用を目的とした大規模公開データの整備および品質担保。
