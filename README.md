@@ -47,7 +47,7 @@
 | :--- | :--- |
 | **言語・FW** | Python (FastAPI), JavaScript (React), Go, C++, HTML/CSS, VB.NET, GAS |
 | **インフラ・DB** | GCP, Docker, Linux (Ubuntu), Windows Server, Selenium, GitHub Actions, IssueOps |
-| **AI・ツール** | 生成AI活用 (Gemini, Claude Code), Octoparse, UiPath, Flet |
+| **AI・ツール** | 生成AI活用 (Gemini, Claude Code), Octoparse, UiPath, Bigquery |
 | **資格・知識** | ITパスポート |
 
 ---
