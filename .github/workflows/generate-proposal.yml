@@ -1,0 +1,106 @@
+name: 提案文自動生成
+
+on:
+  # ① job_postings/ フォルダに .txt ファイルを push したら自動実行
+  push:
+    paths:
+      - "job_postings/*.txt"
+
+  # ② GitHub の Actions タブから手動実行
+  workflow_dispatch:
+    inputs:
+      job_posting_file:
+        description: "案件ファイルを選択"
+        required: true
+        default: "job_postings/video.txt"
+        type: choice
+        options:
+          - job_postings/amazing.txt
+          - job_postings/reuse.txt
+          - job_postings/subteam.txt
+          - job_postings/video.txt
+          - job_postings/zengroup.txt
+      policy:
+        description: "提案文の方針・追加指示（任意）例: '800件PDF案件の実績を特に強調すること'"
+        required: false
+        default: ""
+        type: string
+      skip_low_rate_warning:
+        description: "時給が低くても警告なしで続行する"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # 生成した提案文を proposals/ にコミットするため
+
+    steps:
+      # ───────────────────────────────────────────
+      # 1. リポジトリをチェックアウト
+      # ───────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ───────────────────────────────────────────
+      # 2. Python セットアップ（標準ライブラリのみ使用のため追加 pip 不要）
+      # ───────────────────────────────────────────
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ───────────────────────────────────────────
+      # 3. 対象ファイルを決定する
+      #    - push トリガー : 差分から .txt ファイルを取得
+      #    - 手動トリガー  : inputs.job_posting_file を使用
+      # ───────────────────────────────────────────
+      - name: Resolve target file
+        id: target
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "file=${{ inputs.job_posting_file }}" >> $GITHUB_OUTPUT
+          else
+            # push で変更された job_postings/*.txt を全て処理（スペース区切り）
+            FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
+              | grep '^job_postings/.*\.txt$' | tr '\n' ' ')
+            echo "file=$FILES" >> $GITHUB_OUTPUT
+          fi
+
+      # ───────────────────────────────────────────
+      # 4. 提案文を生成する
+      # ───────────────────────────────────────────
+      - name: Generate proposal(s)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          POLICY="${{ inputs.policy }}"
+          # --yes: 手動トリガーで skip_low_rate_warning=true の場合、または push トリガー（CI=true で自動続行）
+          YES_FLAG=""
+          if [ "${{ inputs.skip_low_rate_warning }}" = "true" ]; then
+            YES_FLAG="--yes"
+          fi
+          for FILE in ${{ steps.target.outputs.file }}; do
+            echo "=== 処理中: $FILE ==="
+            if [ -n "$POLICY" ]; then
+              python3 generate_proposal.py "$FILE" --policy "$POLICY" $YES_FLAG
+            else
+              python3 generate_proposal.py "$FILE" $YES_FLAG
+            fi
+          done
+
+      # ───────────────────────────────────────────
+      # 5. 生成した提案文を proposals/ にコミット & プッシュ
+      # ───────────────────────────────────────────
+      - name: Commit generated proposals
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add proposals/
+          # 変更がなければスキップ
+          git diff --cached --quiet && echo "変更なし。スキップします。" && exit 0
+          git commit -m "feat: 提案文を自動生成 [skip ci]"
+          git push
