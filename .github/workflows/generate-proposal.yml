@@ -10,16 +10,10 @@ on:
   workflow_dispatch:
     inputs:
       job_posting_file:
-        description: "案件ファイルを選択"
+        description: "案件ファイルのパスを入力 (例: job_postings/amazing.txt)"
         required: true
         default: "job_postings/video.txt"
-        type: choice
-        options:
-          - job_postings/amazing.txt
-          - job_postings/reuse.txt
-          - job_postings/subteam.txt
-          - job_postings/video.txt
-          - job_postings/zengroup.txt
+        type: string
       policy:
         description: "提案文の方針・追加指示（任意）例: '800件PDF案件の実績を特に強調すること'"
         required: false
